@@ -1,0 +1,23 @@
+{
+  "name": "flotTooltip",
+  "main": "flotTooltip.js",
+  "version": "0.0.1",
+  "authors": [
+    "Alexander Miranda <alex.miranda@noaa.gov>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "flot",
+    "graphing"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

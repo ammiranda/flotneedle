@@ -25,7 +25,8 @@
 			yaxis: {
 				min: -1.2,
 				max: 1.2
-			}
+			},
+			tooltip: true
 		});
 
 		var legends = $(".graph .legendLabel");

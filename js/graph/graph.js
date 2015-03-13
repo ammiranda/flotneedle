@@ -15,9 +15,6 @@
 					show: true
 				}
 			},
-			crosshair: {
-				mode: "x"
-			},
 			grid: {
 				hoverable: true,
 				autoHighlight: false
@@ -26,7 +23,7 @@
 				min: -1.2,
 				max: 1.2
 			},
-			tooltip: true
+			needle: true
 		});
 
 		var legends = $(".graph .legendLabel");

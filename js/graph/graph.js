@@ -23,7 +23,9 @@
 				min: -1.2,
 				max: 1.2
 			},
-			needle: true
+			needle: {
+				on: true
+			}
 		});
 
 		var legends = $(".graph .legendLabel");

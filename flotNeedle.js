@@ -91,7 +91,11 @@
                     if(series.needle && series.needle.label){
                         text = series.needle.label(dataset_y);
                     }
-                    ctx.fillText(text, draw_pos.left, draw_pos.top);
+                    var textWidth = ctx.measureText(text).width;
+                    ctx.fillStyle = '#fff';
+                    ctx.fillRect(draw_pos.left + 5, draw_pos.top - 15, textWidth + 5, 20);
+                    ctx.fillStyle = series.color;
+                    ctx.fillText(text, draw_pos.left + 8, draw_pos.top);
                 }
                  
 

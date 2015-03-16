@@ -16,7 +16,15 @@
 					}
 				}
 			},
-			{ data: cos, label: "cos(x) = -0.00" }
+			{ 	
+				data: cos, 
+			  	label: "cos(x) = -0.00",
+			  	needle: {
+			  		label: function(text){
+			  			return text.toFixed(2) + ' bbl';
+			  		}
+			  	}
+			}
 		], {
 			series: {
 				lines: {

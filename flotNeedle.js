@@ -87,13 +87,13 @@
                     // draw the value at the appropriate position
                     ctx.fillStyle = series.color;
                     var draw_pos = plot.p2c({x: needle.axes_x, y: dataset_y});
-                    var text = dataset_y;
+                    var text = dataset_y ? dataset_y : '';
                     if(series.needle && series.needle.label){
                         text = series.needle.label(dataset_y);
                     }
                     var textWidth = ctx.measureText(text).width;
                     ctx.fillStyle = '#fff';
-                    ctx.globalAlpha = 0.5;
+                    ctx.globalAlpha = 0.8;
                     ctx.fillRect(draw_pos.left + 4, draw_pos.top - 15, textWidth + 5, 20);
                     ctx.fillStyle = series.color;
                     ctx.globalAlpha = 1.0;

@@ -93,9 +93,11 @@
                     }
                     var textWidth = ctx.measureText(text).width;
                     ctx.fillStyle = '#fff';
-                    ctx.fillRect(draw_pos.left + 5, draw_pos.top - 15, textWidth + 5, 20);
+                    ctx.globalAlpha = 0.5;
+                    ctx.fillRect(draw_pos.left + 4, draw_pos.top - 15, textWidth + 5, 20);
                     ctx.fillStyle = series.color;
-                    ctx.fillText(text, draw_pos.left + 8, draw_pos.top);
+                    ctx.globalAlpha = 1.0;
+                    ctx.fillText(text, draw_pos.left + 7, draw_pos.top);
                 }
                  
 

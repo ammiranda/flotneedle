@@ -9,6 +9,16 @@
         },
     };
 
+    function stackAdapter(datasetIndex, datapointIndex, dataSet){
+        var verticalAdjustment = 0;
+        var index = datasetIndex - 1;
+        for (index; index >= 0; index--){
+            console.log(index);
+            verticalAdjustment += dataSet[index].data[index][1];
+        }
+        return verticalAdjustment;
+    }
+
     function init(plot) {
         var needle = {
             x: -1,
@@ -38,7 +48,6 @@
 
         plot.hooks.drawOverlay.push(function(plot, ctx){
             var op = plot.getOptions().needle;
-
             var plotOffset = plot.getPlotOffset();
 
             ctx.save();
@@ -82,23 +91,25 @@
                             dataset_y = 0;
                         }
                     }
-
-
+                    var vertFix = stackAdapter(i, j, dataset);
+                    console.log(vertFix);
                     // draw the value at the appropriate position
                     ctx.fillStyle = series.color;
-                    var draw_pos = plot.p2c({x: needle.axes_x, y: dataset_y});
                     var text = dataset_y ? dataset_y : '';
+                    var draw_pos = plot.p2c({x: needle.axes_x, y: dataset_y + vertFix});
                     if(series.needle && series.needle.label){
                         text = series.needle.label(dataset_y);
                     }
                     var textWidth = ctx.measureText(text).width;
                     ctx.fillStyle = 'rgba(255,255,255, 0.8)';
-                    ctx.fillRect(draw_pos.left + 4, draw_pos.top - 15, textWidth + 5, 20);
+                    if (i === 1){
+                        console.log(draw_pos);
+                    }
+                    ctx.fillRect(draw_pos.left + 4, Math.abs(draw_pos.top) - 15, textWidth + 5, 20);
                     ctx.fillStyle = series.color;
-                    ctx.fillText(text, draw_pos.left + 7, draw_pos.top);
+                    ctx.fillText(text, draw_pos.left + 7, Math.abs(draw_pos.top));
                 }
                  
-
                 //  insanity
                 // for each dataset get it's related x axis value
                 // for(var i = 0; i < dataset.length; i++){

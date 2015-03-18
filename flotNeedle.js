@@ -13,7 +13,6 @@
         var verticalAdjustment = 0;
         var index = datasetIndex - 1;
         for (index; index >= 0; index--){
-            console.log(index);
             verticalAdjustment += dataSet[index].data[index][1];
         }
         return verticalAdjustment;
@@ -92,7 +91,7 @@
                         }
                     }
                     var vertFix = stackAdapter(i, j, dataset);
-                    console.log(vertFix);
+                    //console.log(vertFix);
                     // draw the value at the appropriate position
                     ctx.fillStyle = series.color;
                     var text = dataset_y ? dataset_y : '';
@@ -102,9 +101,6 @@
                     }
                     var textWidth = ctx.measureText(text).width;
                     ctx.fillStyle = 'rgba(255,255,255, 0.8)';
-                    if (i === 1){
-                        console.log(draw_pos);
-                    }
                     ctx.fillRect(draw_pos.left + 4, Math.abs(draw_pos.top) - 15, textWidth + 5, 20);
                     ctx.fillStyle = series.color;
                     ctx.fillText(text, draw_pos.left + 7, Math.abs(draw_pos.top));

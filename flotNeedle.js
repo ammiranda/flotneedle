@@ -13,7 +13,7 @@
         var verticalAdjustment = 0;
         var index = datasetIndex - 1;
         for (index; index >= 0; index--){
-            verticalAdjustment += dataSet[index].data[index][1];
+            verticalAdjustment += dataSet[index].data[datapointIndex][1];
         }
         return verticalAdjustment;
     }

@@ -18,6 +18,10 @@
         return verticalAdjustment;
     }
 
+    function fillAreaAdapter(){
+
+    }
+
     function init(plot) {
         var needle = {
             x: -1,
@@ -45,13 +49,26 @@
             plot.triggerRedrawOverlay();
         }
 
+        function drawTooltip(series, dataset_y, vertFix, ctx){
+            ctx.fillStyle = series.color;
+            var text = dataset_y ? dataset_y : '';
+            var draw_pos = plot.p2c({x: needle.axes_x, y: dataset_y + vertFix});
+            if(series.needle && series.needle.label){
+                text = series.needle.label(dataset_y);
+            }
+            var textWidth = ctx.measureText(text).width;
+            ctx.fillStyle = 'rgba(255,255,255, 0.8)';
+            ctx.fillRect(draw_pos.left + 4, Math.abs(draw_pos.top) - 15, textWidth + 5, 20);
+            ctx.fillStyle = series.color;
+            ctx.fillText(text, draw_pos.left + 7, Math.abs(draw_pos.top));
+        }
+
         plot.hooks.drawOverlay.push(function(plot, ctx){
             var op = plot.getOptions().needle;
             var plotOffset = plot.getPlotOffset();
 
             ctx.save();
             ctx.translate(plotOffset.left, plotOffset.top);
-
             if (needle.x != -1) {
 
                 ctx.strokeStyle = op.lineColor;
@@ -75,7 +92,7 @@
 
                 for(var i = 0; i < dataset.length; i++){
                     var series = dataset[i];
-
+                    var pointsArray;
                     // find the closest dataset y value to our mouses's x axes
                     var dataset_y = series.data[needle.axes_x];
                     if(dataset_y === undefined){
@@ -86,24 +103,19 @@
                         }
                         if(series.data[j]){
                             dataset_y = series.data[j][1];
+                            var min = series.data[j][3];
+                            var max = series.data[j][4];
+                            pointsArray = [dataset_y, min, max];
+                            console.log(pointsArray);
                         } else {
                             dataset_y = 0;
                         }
                     }
                     var vertFix = stackAdapter(i, j, dataset);
-                    //console.log(vertFix);
                     // draw the value at the appropriate position
-                    ctx.fillStyle = series.color;
-                    var text = dataset_y ? dataset_y : '';
-                    var draw_pos = plot.p2c({x: needle.axes_x, y: dataset_y + vertFix});
-                    if(series.needle && series.needle.label){
-                        text = series.needle.label(dataset_y);
+                    for (var i = 0; i < pointsArray.length; i++){
+                        drawTooltip(series, pointsArray[i], vertFix, ctx);
                     }
-                    var textWidth = ctx.measureText(text).width;
-                    ctx.fillStyle = 'rgba(255,255,255, 0.8)';
-                    ctx.fillRect(draw_pos.left + 4, Math.abs(draw_pos.top) - 15, textWidth + 5, 20);
-                    ctx.fillStyle = series.color;
-                    ctx.fillText(text, draw_pos.left + 7, Math.abs(draw_pos.top));
                 }
                  
                 //  insanity

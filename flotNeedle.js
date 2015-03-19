@@ -18,6 +18,10 @@
         return verticalAdjustment;
     }
 
+    function fillAreaAdapter(){
+
+    }
+
     function init(plot) {
         var needle = {
             x: -1,
@@ -62,7 +66,6 @@
         plot.hooks.drawOverlay.push(function(plot, ctx){
             var op = plot.getOptions().needle;
             var stack = plot.getOptions().series.stack;
-            console.log(stack);
             var plotOffset = plot.getPlotOffset();
 
             ctx.save();
@@ -114,8 +117,12 @@
                     }
                     var vertFix = stackAdapter(i, j, dataset);
                     // draw the value at the appropriate position
-                    for (var i = 0; i < pointsArray.length; i++){
-                        drawTooltip(series, pointsArray[i], vertFix, ctx);
+                    if (!stack){
+                        for (var i = 0; i < pointsArray.length; i++){
+                            drawTooltip(series, pointsArray[i], vertFix, ctx);
+                        }
+                    } else {
+                        drawTooltip(series, pointsArray[0], vertFix, ctx);
                     }
                 }
                  

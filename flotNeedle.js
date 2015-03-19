@@ -18,10 +18,6 @@
         return verticalAdjustment;
     }
 
-    function fillAreaAdapter(){
-
-    }
-
     function init(plot) {
         var needle = {
             x: -1,

@@ -18,10 +18,6 @@
         return verticalAdjustment;
     }
 
-    function fillAreaAdapter(){
-
-    }
-
     function init(plot) {
         var needle = {
             x: -1,
@@ -103,10 +99,13 @@
                         }
                         if(series.data[j]){
                             dataset_y = series.data[j][1];
-                            var min = series.data[j][3];
-                            var max = series.data[j][4];
-                            pointsArray = [dataset_y, min, max];
-                            console.log(pointsArray);
+                            if (plot.getOptions().series.stack !== true){
+                                var min = series.data[j][3];
+                                var max = series.data[j][4];
+                                pointsArray = [dataset_y, min, max];
+                            } else {
+                                pointsArray = [dataset_y];
+                            }
                         } else {
                             dataset_y = 0;
                         }

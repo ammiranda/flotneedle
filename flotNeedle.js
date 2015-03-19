@@ -61,6 +61,8 @@
 
         plot.hooks.drawOverlay.push(function(plot, ctx){
             var op = plot.getOptions().needle;
+            var stack = plot.getOptions().series.stack;
+            console.log(stack);
             var plotOffset = plot.getPlotOffset();
 
             ctx.save();
@@ -99,7 +101,7 @@
                         }
                         if(series.data[j]){
                             dataset_y = series.data[j][1];
-                            if (plot.getOptions().series.stack !== true){
+                            if (!stack){
                                 var min = series.data[j][3];
                                 var max = series.data[j][4];
                                 pointsArray = [dataset_y, min, max];

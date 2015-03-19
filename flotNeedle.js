@@ -108,8 +108,6 @@
                                 var min = series.data[j][3];
                                 var max = series.data[j][4];
                                 pointsArray = [dataset_y, min, max];
-                            } else {
-                                pointsArray = [dataset_y];
                             }
                         } else {
                             dataset_y = 0;
@@ -122,7 +120,7 @@
                             drawTooltip(series, pointsArray[i], vertFix, ctx);
                         }
                     } else {
-                        drawTooltip(series, pointsArray[0], vertFix, ctx);
+                        drawTooltip(series, dataset_y, vertFix, ctx);
                     }
                 }
                  

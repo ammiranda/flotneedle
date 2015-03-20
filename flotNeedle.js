@@ -13,7 +13,9 @@
         var verticalAdjustment = 0;
         var index = datasetIndex - 1;
         for (index; index >= 0; index--){
-            verticalAdjustment += dataSet[index].data[datapointIndex][1];
+            if (dataSet[index].data[datapointIndex]){
+                verticalAdjustment += dataSet[index].data[datapointIndex][1];
+            }
         }
         return verticalAdjustment;
     }
@@ -111,9 +113,9 @@
                     }
                     var vertFix = stackAdapter(i, j, dataset);
                     // draw the value at the appropriate position
-                    if (!stack){
-                        for (var i = 0; i < pointsArray.length; i++){
-                            drawTooltip(series, pointsArray[i], vertFix, ctx);
+                    if (!stack && pointsArray){
+                        for (var k = 0; i < pointsArray.length; k++){
+                            drawTooltip(series, pointsArray[k], vertFix, ctx);
                         }
                     } else {
                         drawTooltip(series, dataset_y, vertFix, ctx);

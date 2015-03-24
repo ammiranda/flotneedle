@@ -12,7 +12,7 @@
     function stackAdapter(datasetIndex, datapointIndex, dataSet){
         var verticalAdjustment = 0;
         var index = datasetIndex - 1;
-        for (index; index >= 0; index--){
+        for (index; index >= 0; --index){
             if (dataSet[index].data[datapointIndex]){
                 verticalAdjustment += dataSet[index].data[datapointIndex][1];
             }
@@ -105,7 +105,9 @@
                             if (!stack){
                                 var min = series.data[j][3];
                                 var max = series.data[j][4];
-                                pointsArray = [dataset_y, min, max];
+                                if (min !== max){
+                                    pointsArray = [dataset_y, min, max];
+                                }
                             }
                         } else {
                             dataset_y = 0;
@@ -113,8 +115,8 @@
                     }
                     var vertFix = stackAdapter(i, j, dataset);
                     // draw the value at the appropriate position
-                    if (!stack && pointsArray){
-                        for (var k = 0; i < pointsArray.length; k++){
+                    if (pointsArray){
+                        for (var k = 0; k < pointsArray.length; k++){
                             drawTooltip(series, pointsArray[k], vertFix, ctx);
                         }
                     } else {

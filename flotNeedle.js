@@ -56,9 +56,9 @@
             }
             var textWidth = ctx.measureText(text).width;
             ctx.fillStyle = 'rgba(255,255,255, 0.8)';
-            ctx.fillRect(draw_pos.left + 4, Math.abs(draw_pos.top) - 15, textWidth + 5, 20);
+            ctx.fillRect(draw_pos.left + 4, draw_pos.top - 15, textWidth + 5, 20);
             ctx.fillStyle = series.color;
-            ctx.fillText(text, draw_pos.left + 7, Math.abs(draw_pos.top));
+            ctx.fillText(text, draw_pos.left + 7, draw_pos.top);
         }
 
         plot.hooks.drawOverlay.push(function(plot, ctx){

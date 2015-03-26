@@ -29,7 +29,8 @@
 			series: {
 				lines: {
 					show: true
-				}
+				},
+				stack: true
 			},
 			grid: {
 				hoverable: true,

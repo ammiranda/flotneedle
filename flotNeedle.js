@@ -20,6 +20,14 @@
         return verticalAdjustment;
     }
 
+    function createDrawArray(plot){
+        /**
+        *   Iterate through data arrays and find if datapoints are within 20 of each other
+        *   if so translate their values into a new array that the draw method will use to
+        *   draw the points
+        **/
+    }
+
     function init(plot) {
         var needle = {
             x: -1,
@@ -45,6 +53,7 @@
             needle.axes_x = pos.x;
 
             plot.triggerRedrawOverlay();
+            createDrawArray(plot);
         }
 
         function drawTooltip(series, dataset_y, vertFix, ctx){

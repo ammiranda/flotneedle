@@ -26,6 +26,45 @@
         *   if so translate their values into a new array that the draw method will use to
         *   draw the points
         **/
+        var drawArray;
+
+        if (plot.getOptions().series.stack){
+            var data = plot.getData();
+            // Copy the data array into the drawArray
+            drawArray = data;
+
+            for (var i = 1; i < data.length; i = i + 2){
+                console.log(i);
+                var topsetIndex = i + 1 > data.length - 1 ? null : i + 1;
+                var bottomsetIndex = i - 1 < 0 ? null : i - 1;
+
+                if (topsetIndex === null && bottomsetIndex === null) break;
+
+                for (var k = 0; k < data[i].data.length; k++){
+                    var topsetPoint = topsetIndex === null ? data[topsetIndex].data[k] : null;
+                    var bottomsetPoint = bottomsetIndex === null ? data[bottomsetIndex].data[k] : null;
+                    var topDiff, bottomDiff;
+
+                    console.log(topsetPoint, bottomsetPoint);
+
+                    if (topsetPoint) topDiff = data[i].data[k] - topsetPoint;
+                    if (bottomsetPoint) bottomDiff = data[i].data[k] - bottomsetPoint;
+
+                    if (Math.abs(topDiff) <= 20){
+                        drawArray[topsetIndex].data[k] += topDiff;
+                        console.log(topDiff);
+                    }
+
+                    if (Math.abs(bottomDiff) <= 20) {
+                        drawArray[bottomsetIndex].data[k] -= bottomDiff;
+                        console.log(bottomDiff);
+                    }
+
+                }
+            }
+        }
+
+        return drawArray;
     }
 
     function init(plot) {
@@ -53,13 +92,12 @@
             needle.axes_x = pos.x;
 
             plot.triggerRedrawOverlay();
-            createDrawArray(plot);
         }
 
-        function drawTooltip(series, dataset_y, vertFix, ctx){
+        function drawTooltip(series, dataset_y, drawPoint, vertFix, ctx){
             ctx.fillStyle = series.color;
             var text = dataset_y ? dataset_y : '';
-            var draw_pos = plot.p2c({x: needle.axes_x, y: dataset_y + vertFix});
+            var draw_pos = plot.p2c({x: needle.axes_x, y: drawPoint + vertFix});
             if(series.needle && series.needle.label){
                 text = series.needle.label(dataset_y);
             }
@@ -97,12 +135,15 @@
 
                 // draw dataset values
                 var dataset = plot.getData();
+                var drawArray = createDrawArray(plot);
 
                 for(var i = 0; i < dataset.length; i++){
                     var series = dataset[i];
+                    var drawSeries = drawArray[i];
                     var pointsArray;
                     // find the closest dataset y value to our mouses's x axes
                     var dataset_y = series.data[needle.axes_x];
+                    var drawPoint = drawSeries.data[needle.axes_x];
                     if(dataset_y === undefined){
                         for (j = 0; j < series.data.length; ++j) {
                             if (series.data[j][0] > needle.axes_x) {
@@ -111,6 +152,7 @@
                         }
                         if(series.data[j]){
                             dataset_y = series.data[j][1];
+                            drawPoint = drawSeries.data[j][1];
                             if (!stack){
                                 var min = series.data[j][3];
                                 var max = series.data[j][4];
@@ -120,6 +162,7 @@
                             }
                         } else {
                             dataset_y = 0;
+                            drawPoint = 0;
                         }
                     }
                     var vertFix = stackAdapter(i, j, dataset);
@@ -129,7 +172,7 @@
                             drawTooltip(series, pointsArray[k], vertFix, ctx);
                         }
                     } else {
-                        drawTooltip(series, dataset_y, vertFix, ctx);
+                        drawTooltip(series, dataset_y, drawPoint, vertFix, ctx);
                     }
                 }
                  

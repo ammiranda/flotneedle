@@ -44,19 +44,17 @@
                     var bottomsetPoint = bottomsetIndex !== null ? data[bottomsetIndex].data[k][1] : null;
                     var topDiff, bottomDiff;
 
-                    if (topsetPoint) topDiff = data[i].data[k][1] - topsetPoint;
-                    if (bottomsetPoint) bottomDiff = data[i].data[k][1] - bottomsetPoint;
+                    if (topsetPoint) topDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(topsetPoint, plot);
+                    if (bottomsetPoint) bottomDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(bottomsetPoint, plot);
 
                     if (Math.abs(topDiff) <= 20){
-                        drawArray[topsetIndex].data[k][1] += topDiff;
-                        console.log(topDiff);
+                        var topTranslation = 20 - Math.abs(topDiff);
+                        drawArray[topsetIndex].data[k][1] += topTranslation;
                     }
 
-                    console.log(drawArray[bottomsetIndex].data[k][1]);
-
                     if (Math.abs(bottomDiff) <= 20) {
-                        drawArray[bottomsetIndex].data[k][1] -= bottomDiff;
-                        console.log(drawArray[bottomsetIndex].data[k][1]);
+                        var bottomTranslation = 20 - Math.abs(bottomDiff);
+                        drawArray[bottomsetIndex].data[k][1] -= bottomTranslation;
                     }
 
                 }
@@ -64,6 +62,12 @@
         }
 
         return drawArray;
+    }
+
+    function convertYp2c(ycoord, plot){
+        var coordObj = {x: 0, y: ycoord};
+        var convertedObj = plot.p2c(coordObj);
+        return convertedObj.y;
     }
 
     function init(plot) {

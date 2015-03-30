@@ -34,30 +34,29 @@
             drawArray = data;
 
             for (var i = 1; i < data.length; i = i + 2){
-                console.log(i);
                 var topsetIndex = i + 1 > data.length - 1 ? null : i + 1;
                 var bottomsetIndex = i - 1 < 0 ? null : i - 1;
 
                 if (topsetIndex === null && bottomsetIndex === null) break;
 
                 for (var k = 0; k < data[i].data.length; k++){
-                    var topsetPoint = topsetIndex === null ? data[topsetIndex].data[k] : null;
-                    var bottomsetPoint = bottomsetIndex === null ? data[bottomsetIndex].data[k] : null;
+                    var topsetPoint = topsetIndex !== null ? data[topsetIndex].data[k][1] : null;
+                    var bottomsetPoint = bottomsetIndex !== null ? data[bottomsetIndex].data[k][1] : null;
                     var topDiff, bottomDiff;
 
-                    console.log(topsetPoint, bottomsetPoint);
-
-                    if (topsetPoint) topDiff = data[i].data[k] - topsetPoint;
-                    if (bottomsetPoint) bottomDiff = data[i].data[k] - bottomsetPoint;
+                    if (topsetPoint) topDiff = data[i].data[k][1] - topsetPoint;
+                    if (bottomsetPoint) bottomDiff = data[i].data[k][1] - bottomsetPoint;
 
                     if (Math.abs(topDiff) <= 20){
-                        drawArray[topsetIndex].data[k] += topDiff;
+                        drawArray[topsetIndex].data[k][1] += topDiff;
                         console.log(topDiff);
                     }
 
+                    console.log(drawArray[bottomsetIndex].data[k][1]);
+
                     if (Math.abs(bottomDiff) <= 20) {
-                        drawArray[bottomsetIndex].data[k] -= bottomDiff;
-                        console.log(bottomDiff);
+                        drawArray[bottomsetIndex].data[k][1] -= bottomDiff;
+                        console.log(drawArray[bottomsetIndex].data[k][1]);
                     }
 
                 }

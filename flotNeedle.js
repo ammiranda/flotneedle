@@ -26,6 +26,7 @@
         *   if so translate their values into a new array that the draw method will use to
         *   draw the points
         **/
+        var threshold;
         var data = plot.getData();
         var drawArray = data;
 
@@ -46,9 +47,7 @@
                     if (topsetPoint) topDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(topsetPoint, plot);
                     if (bottomsetPoint) bottomDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(bottomsetPoint, plot);
 
-                    var threshold = plot.c2p({left: 0, top: 20});
-
-                    console.log(bottomDiff);
+                    threshold = plot.c2p({left: 0, top: 20});
 
                     if (Math.abs(topDiff) <= threshold.y){
                         var topTranslation = 20 - Math.abs(topDiff);
@@ -63,6 +62,23 @@
                 }
             }
         } else {
+            // Determine how much in terms of data values will result in only a vertical distance of 20px 
+            // on canvas
+            threshold = plot.c2p({left:1, top: 0}).y - plot.c2p({left: 1, top: 20}).y;
+            
+            for (var j = 0; j < drawArray[0].data.length; j++){
+                var dataPoint = drawArray[0].data[j];
+                var maxDiff = dataPoint[4] - dataPoint[1];
+                var minDiff = dataPoint[1] - dataPoint[3];
+
+                if (maxDiff < threshold){
+                    drawArray[0].data[j][4] += threshold;
+                }
+
+                if (minDiff < threshold){
+                    drawArray[0].data[j][3] -= threshold;
+                }
+            }
 
         }
         return drawArray;

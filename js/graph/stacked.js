@@ -1,7 +1,7 @@
 $(function () {    
     var data1 = GenerateSeries(0);
     var data2 = GenerateSeries(100);
-    var data3 = GenerateSeries(200);
+    var data3 = GenerateSeries(100);
     var dataset = [data1, data2, data3];
  
     function GenerateSeries(added){

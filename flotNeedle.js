@@ -26,12 +26,11 @@
         *   if so translate their values into a new array that the draw method will use to
         *   draw the points
         **/
-        var drawArray;
+        var data = plot.getData();
+        var drawArray = data;
 
         if (plot.getOptions().series.stack){
-            var data = plot.getData();
             // Copy the data array into the drawArray
-            drawArray = data;
 
             for (var i = 1; i < data.length; i = i + 2){
                 var topsetIndex = i + 1 > data.length - 1 ? null : i + 1;
@@ -47,27 +46,32 @@
                     if (topsetPoint) topDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(topsetPoint, plot);
                     if (bottomsetPoint) bottomDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(bottomsetPoint, plot);
 
-                    if (Math.abs(topDiff) <= 20){
+                    var threshold = plot.c2p({left: 0, top: 20});
+
+                    console.log(bottomDiff);
+
+                    if (Math.abs(topDiff) <= threshold.y){
                         var topTranslation = 20 - Math.abs(topDiff);
                         drawArray[topsetIndex].data[k][1] += topTranslation;
                     }
 
-                    if (Math.abs(bottomDiff) <= 20) {
+                    if (Math.abs(bottomDiff) <= threshold.y) {
                         var bottomTranslation = 20 - Math.abs(bottomDiff);
+                        console.log(bottomTranslation);
                         drawArray[bottomsetIndex].data[k][1] -= bottomTranslation;
                     }
-
                 }
             }
-        }
+        } else {
 
+        }
         return drawArray;
     }
 
     function convertYp2c(ycoord, plot){
         var coordObj = {x: 0, y: ycoord};
         var convertedObj = plot.p2c(coordObj);
-        return convertedObj.y;
+        return convertedObj.top;
     }
 
     function init(plot) {
@@ -172,7 +176,7 @@
                     // draw the value at the appropriate position
                     if (pointsArray){
                         for (var k = 0; k < pointsArray.length; k++){
-                            drawTooltip(series, pointsArray[k], vertFix, ctx);
+                            drawTooltip(series, pointsArray[k], pointsArray[k], vertFix, ctx);
                         }
                     } else {
                         drawTooltip(series, dataset_y, drawPoint, vertFix, ctx);

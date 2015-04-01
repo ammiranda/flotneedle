@@ -31,31 +31,19 @@ Released under the MIT license.
                 var areaconf2 = [{ representation:"symmetric"},{representation:"asymmetric"}];
                 
                 var mydata = [];
-                var mydata2 = [];
                 
                 for(var i = 0; i< points.length; i++) {
                     var x = points[i][0];
                     var y = points[i][1];
              
                     var stddev = 5.5;
-                    var min = y- 10.0;
-                    var max = y+ 10.0;
+                    var min = y- 10.0 * i;
+                    var max = y+ 10.0 * 2 * i;
                     mydata.push([x,y,stddev, min, max]);
                 }
              
-                for(var i = 0; i< points.length; i++) {
-                    var x = points[i][0];
-                    var y = points[i][1]+30;
-             
-                    var stddev = 3.5;
-                    var min = y - (3.5 + 10.0 * Math.random());
-                    var max = y + (3.5 + 10.0 * Math.random()); 
-                    mydata2.push([x,y,stddev, min, max]);
-                }
-             
                 var dataset = [        
-                    {data:mydata, fillArea:areaconf, lines: { show: true, lineWidth: 2, fill: false}, color:"brown", opacity:1, label:"Line"},
-                  {data:mydata2, fillArea:areaconf2, lines: { show: true, lineWidth: 2, fill: false, steps:true}, color:"blue", opacity:1, label:"Steps"}
+                    {data:mydata, fillArea:areaconf, lines: { show: true, lineWidth: 2, fill: false}, color:"brown", opacity:1, label:"Line"}
                 ]
 
                 $.plot($("#placeholder"), dataset, {
@@ -67,6 +55,9 @@ Released under the MIT license.
                     },
                     grid: {
                         hoverable: true
+                    },
+                    series: {
+                        stack: false
                     }
                 });
                 

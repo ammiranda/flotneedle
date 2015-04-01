@@ -56,7 +56,6 @@
 
                     if (Math.abs(bottomDiff) <= threshold.y) {
                         var bottomTranslation = 20 - Math.abs(bottomDiff);
-                        console.log(bottomTranslation);
                         drawArray[bottomsetIndex].data[k][1] -= bottomTranslation;
                     }
                 }
@@ -64,7 +63,7 @@
         } else {
             // Determine how much in terms of data values will result in only a vertical distance of 20px 
             // on canvas
-            threshold = plot.c2p({left:1, top: 0}).y - plot.c2p({left: 1, top: 20}).y;
+            threshold = plot.c2p({left: 1, top: 0}).y - plot.c2p({left: 1, top: 20}).y;
             
             for (var j = 0; j < drawArray[0].data.length; j++){
                 var dataPoint = drawArray[0].data[j];
@@ -72,11 +71,13 @@
                 var minDiff = dataPoint[1] - dataPoint[3];
 
                 if (maxDiff < threshold){
-                    drawArray[0].data[j][4] += threshold;
+                    var maxBuffer = threshold - maxDiff;
+                    drawArray[0].data[j][4] += maxBuffer;
                 }
 
                 if (minDiff < threshold){
-                    drawArray[0].data[j][3] -= threshold;
+                    var minBuffer = threshold - minDiff;
+                    drawArray[0].data[j][3] -= minBuffer;
                 }
             }
 

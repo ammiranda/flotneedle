@@ -33,33 +33,33 @@
         if (plot.getOptions().series.stack){
             // Copy the data array into the drawArray
 
-            for (var i = 1; i < data.length; i = i + 2){
-                var topsetIndex = i + 1 > data.length - 1 ? null : i + 1;
-                var bottomsetIndex = i - 1 < 0 ? null : i - 1;
+            // for (var i = 1; i < data.length; i = i + 2){
+            //     var topsetIndex = i + 1 > data.length - 1 ? null : i + 1;
+            //     var bottomsetIndex = i - 1 < 0 ? null : i - 1;
 
-                if (topsetIndex === null && bottomsetIndex === null) break;
+            //     if (topsetIndex === null && bottomsetIndex === null) break;
 
-                for (var k = 0; k < data[i].data.length; k++){
-                    var topsetPoint = topsetIndex !== null ? data[topsetIndex].data[k][1] : null;
-                    var bottomsetPoint = bottomsetIndex !== null ? data[bottomsetIndex].data[k][1] : null;
-                    var topDiff, bottomDiff;
+            //     for (var k = 0; k < data[i].data.length; k++){
+            //         var topsetPoint = topsetIndex !== null ? data[topsetIndex].data[k][1] : null;
+            //         var bottomsetPoint = bottomsetIndex !== null ? data[bottomsetIndex].data[k][1] : null;
+            //         var topDiff, bottomDiff;
 
-                    if (topsetPoint) topDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(topsetPoint, plot);
-                    if (bottomsetPoint) bottomDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(bottomsetPoint, plot);
+            //         if (topsetPoint) topDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(topsetPoint, plot);
+            //         if (bottomsetPoint) bottomDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(bottomsetPoint, plot);
 
-                    threshold = plot.c2p({left: 0, top: 20});
+            //         threshold = plot.c2p({left: 0, top: 20});
 
-                    if (Math.abs(topDiff) <= threshold.y){
-                        var topTranslation = 20 - Math.abs(topDiff);
-                        drawArray[topsetIndex].data[k][1] += topTranslation;
-                    }
+            //         if (Math.abs(topDiff) <= threshold.y){
+            //             var topTranslation = 20 - Math.abs(topDiff);
+            //             drawArray[topsetIndex].data[k][1] += topTranslation;
+            //         }
 
-                    if (Math.abs(bottomDiff) <= threshold.y) {
-                        var bottomTranslation = 20 - Math.abs(bottomDiff);
-                        drawArray[bottomsetIndex].data[k][1] -= bottomTranslation;
-                    }
-                }
-            }
+            //         if (Math.abs(bottomDiff) <= threshold.y) {
+            //             var bottomTranslation = 20 - Math.abs(bottomDiff);
+            //             drawArray[bottomsetIndex].data[k][1] -= bottomTranslation;
+            //         }
+            //     }
+            // }
         } else {
             // Determine how much in terms of data values will result in only a vertical distance of 20px 
             // on canvas

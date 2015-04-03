@@ -10,8 +10,4 @@ $(function(){
 		}
 		return data;
 	}
-
-	var options = {
-		
-	}
 });

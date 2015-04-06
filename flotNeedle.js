@@ -51,9 +51,8 @@
                 ctx.fillStyle = 'rgba(255,255,255, 0.8)';
                 ctx.fillRect(needle.x + 2, keys[i] - 15, textWidth + 5, 20);
                 ctx.fillStyle = tooltip.color;
-                ctx.fillText(tooltip.text, needle.x + 5, keys[i]);    
+                ctx.fillText(tooltip.text, needle.x + 5, keys[i]);
             }
-            
         }
 
         function getPoints(plot){
@@ -136,12 +135,56 @@
                 }
             }
 
-
             // make sure tooltips don't overlap
             var keys = Object.keys(tooltips);
-            for(var t = 0; t < keys.length; t++){
-                tt = tooltips[keys[t]];
+            for (var j = 0; j < keys.length; j++){
+                keys[j] = parseFloat(keys[j]);
             }
+            console.log(keys);
+            keys = keys.sort(function(a, b){
+                var distance = Math.abs(a - b) < 20;
+                var tooltip = tooltips[a];
+
+                if (a < b && distance){
+                    delete tooltips[a];
+                    a -= 1;
+                    tooltips[a] = tooltip;
+                    return -1;
+                }
+
+                if (a == b){
+                    a -= 1;
+                    tooltips[a] = tooltip;
+                    return 0;
+                }
+
+                if (a > b && distance){
+                    delete tooltips[a];
+                    a += 1;
+                    tooltips[a] = tooltip;
+                    return 1;
+                }
+
+                return 0;
+            });
+            console.log(keys);
+            
+            // for(var t = 0; t < keys.length; t++){
+            //     tt = tooltips[keys[t]];
+            //     var next = t + 1;
+            //     var buffer;
+            //     var newKey;
+
+            //     if (keys[next]){
+            //         var distAbove = Math.abs(parseFloat(keys[next]) - parseFloat(keys[t]));
+            //         if (distAbove < 20){
+            //             buffer = 20 - distAbove;
+            //             newKey = parseFloat(keys[t]) + buffer;
+            //             tooltips[newKey] = tooltips[keys[t]];
+            //             delete tooltips[keys[t]];
+            //         }
+            //     }
+            // }
 
             return tooltips;
 
@@ -238,7 +281,6 @@
                 var points = getPoints(plot);
                 var drawSet = createDrawSet(points, plot);
                 drawTooltips(ctx, drawSet);
-                
             }
             ctx.restore();
         });

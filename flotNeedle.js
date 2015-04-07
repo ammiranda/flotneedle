@@ -101,6 +101,49 @@
             return points;
         }
 
+        function padTooltips(tooltips){
+            console.log('before', tooltips);
+
+            var distance = 20;
+
+            var keys = Object.keys(tooltips);
+            for (var j = 0; j < keys.length; j++){
+                keys[j] = parseFloat(keys[j]);
+            }
+            keys.sort();
+            keys.reverse();
+            console.log('key');
+            for(var k = 0; k < keys.length; k++){
+                var current = keys[k];
+
+                // check previous value if it exists
+                if(keys[k-1]){
+
+                }
+
+                // check next if value exists
+                if(keys[k+1]){
+                    var next = keys[k+1];
+                    console.log('current', current);
+                    console.log('next', next);
+                    if(current - next  < distance){
+                        next = current + distance;
+
+                        tooltip = tooltips[keys[k+1]];
+                        delete tooltips[keys[k+1]];
+                        keys[k+1] = next;
+                        tooltips[next] = tooltip;
+
+                    }
+                }
+
+            }
+
+            console.log('after', tooltips);
+
+            return tooltips;
+        }
+
         function createDrawSet(points, plot){
             var tooltips = {};
             var options = plot.getOptions();
@@ -124,6 +167,8 @@
                     color: color
                 };
 
+                coords.top = parseInt(coords.top);
+
                 if(tooltips[coords.top] === undefined){
                     tooltips[coords.top] = tooltip;
                 } else {
@@ -135,121 +180,7 @@
                 }
             }
 
-            // make sure tooltips don't overlap
-            var keys = Object.keys(tooltips);
-            for (var j = 0; j < keys.length; j++){
-                keys[j] = parseFloat(keys[j]);
-            }
-            console.log(keys);
-            keys = keys.sort(function(a, b){
-                var distance = Math.abs(a - b) < 20;
-                var tooltip = tooltips[a];
-
-                if (a < b && distance){
-                    delete tooltips[a];
-                    a -= 1;
-                    tooltips[a] = tooltip;
-                    return -1;
-                }
-
-                if (a == b){
-                    a -= 1;
-                    tooltips[a] = tooltip;
-                    return 0;
-                }
-
-                if (a > b && distance){
-                    delete tooltips[a];
-                    a += 1;
-                    tooltips[a] = tooltip;
-                    return 1;
-                }
-
-                return 0;
-            });
-            console.log(keys);
-            
-            // for(var t = 0; t < keys.length; t++){
-            //     tt = tooltips[keys[t]];
-            //     var next = t + 1;
-            //     var buffer;
-            //     var newKey;
-
-            //     if (keys[next]){
-            //         var distAbove = Math.abs(parseFloat(keys[next]) - parseFloat(keys[t]));
-            //         if (distAbove < 20){
-            //             buffer = 20 - distAbove;
-            //             newKey = parseFloat(keys[t]) + buffer;
-            //             tooltips[newKey] = tooltips[keys[t]];
-            //             delete tooltips[keys[t]];
-            //         }
-            //     }
-            // }
-
-            return tooltips;
-
-            // /**
-            // *   Iterate through data arrays and find if datapoints are within 20 of each other
-            // *   if so translate their values into a new array that the draw method will use to
-            // *   draw the points
-            // **/
-            // var threshold;
-            // var data = plot.getData();
-            // var drawArray = data;
-
-            // if (plot.getOptions().series.stack){
-            //     // Copy the data array into the drawArray
-
-            //     // for (var i = 1; i < data.length; i = i + 2){
-            //     //     var topsetIndex = i + 1 > data.length - 1 ? null : i + 1;
-            //     //     var bottomsetIndex = i - 1 < 0 ? null : i - 1;
-
-            //     //     if (topsetIndex === null && bottomsetIndex === null) break;
-
-            //     //     for (var k = 0; k < data[i].data.length; k++){
-            //     //         var topsetPoint = topsetIndex !== null ? data[topsetIndex].data[k][1] : null;
-            //     //         var bottomsetPoint = bottomsetIndex !== null ? data[bottomsetIndex].data[k][1] : null;
-            //     //         var topDiff, bottomDiff;
-
-            //     //         if (topsetPoint) topDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(topsetPoint, plot);
-            //     //         if (bottomsetPoint) bottomDiff = convertYp2c(data[i].data[k][1], plot) - convertYp2c(bottomsetPoint, plot);
-
-            //     //         threshold = plot.c2p({left: 0, top: 20});
-
-            //     //         if (Math.abs(topDiff) <= threshold.y){
-            //     //             var topTranslation = 20 - Math.abs(topDiff);
-            //     //             drawArray[topsetIndex].data[k][1] += topTranslation;
-            //     //         }
-
-            //     //         if (Math.abs(bottomDiff) <= threshold.y) {
-            //     //             var bottomTranslation = 20 - Math.abs(bottomDiff);
-            //     //             drawArray[bottomsetIndex].data[k][1] -= bottomTranslation;
-            //     //         }
-            //     //     }
-            //     // }
-            // } else {
-            //     // Determine how much in terms of data values will result in only a vertical distance of 20px 
-            //     // on canvas
-            //     threshold = plot.c2p({left: 1, top: 0}).y - plot.c2p({left: 1, top: 20}).y;
-                
-            //     for (var j = 0; j < drawArray[0].data.length; j++){
-            //         var dataPoint = drawArray[0].data[j];
-            //         var maxDiff = dataPoint[4] - dataPoint[1];
-            //         var minDiff = dataPoint[1] - dataPoint[3];
-
-            //         if (maxDiff < threshold){
-            //             var maxBuffer = threshold - maxDiff;
-            //             drawArray[0].data[j][4] += maxBuffer;
-            //         }
-
-            //         if (minDiff < threshold){
-            //             var minBuffer = threshold - minDiff;
-            //             drawArray[0].data[j][3] -= minBuffer;
-            //         }
-            //     }
-
-            // }
-            // return drawArray;
+            return padTooltips(tooltips);
         }
 
         plot.hooks.drawOverlay.push(function(plot, ctx){

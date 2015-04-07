@@ -43,7 +43,15 @@ Released under the MIT license.
                 }
              
                 var dataset = [        
-                    {data:mydata, fillArea:areaconf, lines: { show: true, lineWidth: 2, fill: false}, color:"brown", opacity:1, label:"Line"}
+                    {
+                        data:mydata,
+                        fillArea:areaconf, lines: { show: true, lineWidth: 2, fill: false}, color:"brown", opacity:1, label:"Line",
+                        needle:{
+                            label: function(num){
+                                return num + ' ajsdkfl';
+                            }
+                        }
+                    }
                 ]
 
                 $.plot($("#placeholder"), dataset, {

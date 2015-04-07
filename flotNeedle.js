@@ -108,33 +108,41 @@
                 keys[j] = parseFloat(keys[j]);
             }
             keys.sort(function(a, b){
-                return a - b;
+                return b - a;
             });
 
             for(var k = 0; k < keys.length; k++){
                 var current = keys[k];
-
                 // check previous value if it exists
                 if(keys[k-1]){
+                    var prev = keys[k-1];
+                    if(prev - current < distance){
+                        current = prev - distance;
 
-                }
-
-                // check next if value exists
-                if(keys[k+1]){
-                    var next = keys[k+1];
-                    if(next - current < distance){
-                        next = current + distance;
-
-                        tooltip = tooltips[keys[k+1]];
-                        delete tooltips[keys[k+1]];
-                        keys[k+1] = next;
-                        tooltips[next] = tooltip;
+                        tooltip = tooltips[keys[k]];
+                        delete tooltips[keys[k]];
+                        keys[k] = current;
+                        tooltips[current] = tooltip;
 
                     }
                 }
 
-            }
+                // check next if value exists
+                // todo: add options for this so we can do top down or bottom up
+                // if(keys[k+1]){
+                //     var next = keys[k+1];
+                //     if(next - current < distance){
+                //         next = current + distance;
 
+                //         tooltip = tooltips[keys[k+1]];
+                //         delete tooltips[keys[k+1]];
+                //         keys[k+1] = next;
+                //         tooltips[next] = tooltip;
+
+                //     }
+                // }
+
+            }
             return tooltips;
         }
 

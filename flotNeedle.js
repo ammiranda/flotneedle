@@ -102,17 +102,15 @@
         }
 
         function padTooltips(tooltips){
-            console.log('before', tooltips);
-
             var distance = 20;
-
             var keys = Object.keys(tooltips);
             for (var j = 0; j < keys.length; j++){
                 keys[j] = parseFloat(keys[j]);
             }
-            keys.sort();
-            keys.reverse();
-            console.log('key');
+            keys.sort(function(a, b){
+                return a - b;
+            });
+
             for(var k = 0; k < keys.length; k++){
                 var current = keys[k];
 
@@ -124,9 +122,7 @@
                 // check next if value exists
                 if(keys[k+1]){
                     var next = keys[k+1];
-                    console.log('current', current);
-                    console.log('next', next);
-                    if(current - next  < distance){
+                    if(next - current < distance){
                         next = current + distance;
 
                         tooltip = tooltips[keys[k+1]];
@@ -138,8 +134,6 @@
                 }
 
             }
-
-            console.log('after', tooltips);
 
             return tooltips;
         }

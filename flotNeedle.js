@@ -47,11 +47,20 @@
             for(var i = 0; i < keys.length; i++){
                 var tooltip = drawSet[keys[i]];
 
+                var rectXPosition = needle.x + 2;
+                var textXPosition = needle.x + 5;
+
                 var textWidth = ctx.measureText(tooltip.text).width;
+
+                if (needle.x + textWidth > plot.width()){
+                    rectXPosition -= textWidth * 2;
+                    textXPosition -= textWidth * 2;
+                }
+
                 ctx.fillStyle = 'rgba(255,255,255, 0.8)';
-                ctx.fillRect(needle.x + 2, keys[i] - 15, textWidth + 5, 20);
+                ctx.fillRect(rectXPosition, keys[i] - 15, textWidth + 5, 20);
                 ctx.fillStyle = tooltip.color;
-                ctx.fillText(tooltip.text, needle.x + 5, keys[i]);
+                ctx.fillText(tooltip.text, textXPosition, keys[i]);
             }
         }
 
@@ -111,22 +120,20 @@
                 return b - a;
             });
 
-            for(var k = 0; k < keys.length; k++){
+            for(var k = 1; k < keys.length; k++){
                 var current = keys[k];
                 // check previous value if it exists
                 if(keys[k-1]){
                     var prev = keys[k-1];
-                    if(prev - current < distance){
-                        current = prev - distance;
+                    if(Math.abs(prev - current) < distance){
+                        current = Math.floor(Math.abs(prev - distance));
 
                         tooltip = tooltips[keys[k]];
+                        tooltips[current] = tooltip;
                         delete tooltips[keys[k]];
                         keys[k] = current;
-                        tooltips[current] = tooltip;
-
                     }
                 }
-
                 // check next if value exists
                 // todo: add options for this so we can do top down or bottom up
                 // if(keys[k+1]){
@@ -143,6 +150,7 @@
                 // }
 
             }
+
             return tooltips;
         }
 
@@ -181,7 +189,6 @@
                     tooltips[top] = tooltip;
                 }
             }
-
             return padTooltips(tooltips);
         }
 

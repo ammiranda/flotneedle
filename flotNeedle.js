@@ -50,15 +50,15 @@
                 var rectXPosition = needle.x + 2;
                 var textXPosition = needle.x + 5;
 
-                var textWidth = ctx.measureText(tooltip.text).width;
+                var textWidth = ctx.measureText(tooltip.text).width + 5;
 
                 if (needle.x + textWidth > plot.width()){
-                    rectXPosition -= textWidth * 2;
-                    textXPosition -= textWidth * 2;
+                    rectXPosition -= textWidth + 4;
+                    textXPosition -= textWidth + 6;
                 }
 
                 ctx.fillStyle = 'rgba(255,255,255, 0.8)';
-                ctx.fillRect(rectXPosition, keys[i] - 15, textWidth + 5, 20);
+                ctx.fillRect(rectXPosition, keys[i] - 15, textWidth, 20);
                 ctx.fillStyle = tooltip.color;
                 ctx.fillText(tooltip.text, textXPosition, keys[i]);
             }

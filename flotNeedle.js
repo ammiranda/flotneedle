@@ -167,6 +167,16 @@
                 }
             }
 
+            if (options.needle.nodupes){
+                if (points[1][2] === points[2][2]){
+                    points.splice(2, 1);
+                }
+                if (points[1][2] === points[0][2]){
+                    points.splice(0, 1);
+                }
+
+            }
+
             // convert data array to tooltip objects;
             for(var p = 0; p < points.length; p++){
                 var coords = plot.p2c({x: points[p][0], y: points[p][1]});
@@ -177,7 +187,7 @@
                     color: color
                 };
 
-                coords.top = parseInt(coords.top);
+                coords.top = parseInt(coords.top, 10);
 
                 if(tooltips[coords.top] === undefined){
                     tooltips[coords.top] = tooltip;

@@ -167,7 +167,7 @@
                 }
             }
 
-            if (!options.needle.noduplicates){
+            if (options.needle.noduplicates){
                 if (points[2][2] && points[1][2] === points[2][2]){
                     points.splice(2, 1);
                 }

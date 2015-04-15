@@ -31,7 +31,8 @@ $(function () {
                 noColumns: 0
             },
             needle: {
-            	on: true
+            	on: true,
+                nodupes: true
             },
             grid: {
             	hoverable: true

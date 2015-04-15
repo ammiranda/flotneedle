@@ -167,14 +167,13 @@
                 }
             }
 
-            if (options.needle.noduplicates){
-                if (points[1][2] === points[2][2]){
+            if (!options.needle.noduplicates){
+                if (points[2][2] && points[1][2] === points[2][2]){
                     points.splice(2, 1);
                 }
-                if (points[1][2] === points[0][2]){
+                if (points[0][2] && points[1][2] === points[0][2]){
                     points.splice(0, 1);
                 }
-
             }
 
             // convert data array to tooltip objects;

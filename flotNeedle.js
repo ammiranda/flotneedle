@@ -76,6 +76,8 @@
                     }
                     if(series.data[j]){
                         dataset_y = series.data[j][1];
+                    } else if (needle.x > -1) {
+                        dataset_y = series.data[j-1][1];
                     } else {
                         dataset_y = 0;
                     }
@@ -87,9 +89,17 @@
                 }
 
                 // add additional points if fill area is defined
-                if (series.fillArea && series.data[j]){
-                    var min = series.data[j][3];
-                    var max = series.data[j][4];
+                if (series.fillArea && (series.data[j] || series.data[j-1])){
+                    var min;
+                    var max;
+
+                    if (needle.x > -1 && j > 0){
+                        min = series.data[j-1][3];
+                        max = series.data[j-1][4];
+                    } else {
+                        min = series.data[j][3];
+                        max = series.data[j][4];
+                    }
 
                     if(series.needle && series.needle.label){
                         points.push([needle.axes_x, min, series.needle.label(min), series.color]);
@@ -101,6 +111,7 @@
 
                 }
             }
+            console.log(points);
             return points;
         }
 

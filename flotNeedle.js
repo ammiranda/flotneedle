@@ -9,12 +9,6 @@
         },
     };
 
-    function convertYp2c(ycoord, plot){
-        var coordObj = {x: 0, y: ycoord};
-        var convertedObj = plot.p2c(coordObj);
-        return convertedObj.top;
-    }
-
     function init(plot) {
         var needle = {
             x: -1,

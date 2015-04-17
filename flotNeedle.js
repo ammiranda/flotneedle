@@ -107,28 +107,51 @@
         function padTooltips(tooltips){
             var distance = 20;
             var keys = Object.keys(tooltips);
+            // convert each key to an int.
             for (var j = 0; j < keys.length; j++){
-                keys[j] = parseFloat(keys[j]);
+                keys[j] = parseInt(keys[j]);
             }
+
+            // sort least to greatest
             keys.sort(function(a, b){
                 return b - a;
             });
 
+            // for each key make sure it's `distance` from the previous value in the index order
+            // ex: [45, 46, 47] => [45, 65, 85]
             for(var k = 1; k < keys.length; k++){
                 var current = keys[k];
                 // check previous value if it exists
                 if(keys[k-1]){
                     var prev = keys[k-1];
+                    // check if the value is with in `distanct`
                     if(Math.abs(prev - current) < distance){
-                        current = Math.floor(Math.abs(prev - distance));
+                        // it is so find where it should shift to
+                        current = Math.abs(prev - distance);
 
+                        // get the tooltips you're going to shift
                         tooltip = tooltips[keys[k]];
-                        tooltips[current] = tooltip;
+                        // remove the old reference
                         delete tooltips[keys[k]];
+                        // check if the new position isn't already full
+                        if(tooltips[current]){
+                            // it is so shift it over 1 position on the tooltip object
+                            tooltips[current+1] = tooltips[current];
+                            // and any key in the keys array
+                            for(var s = 0; s < keys.length; s++){
+                                if(keys[s] === current){
+                                    keys[s]++;
+                                }
+                            }
+                        }
+                        // move it to the new position
+                        tooltips[current] = tooltip;
+                        // update the keys with the new position
                         keys[k] = current;
                     }
                 }
-                // check next if value exists
+                // this one would do the oposit of above 
+                // ex: [45, 46, 47] => [7, 27, 47]
                 // todo: add options for this so we can do top down or bottom up
                 // if(keys[k+1]){
                 //     var next = keys[k+1];

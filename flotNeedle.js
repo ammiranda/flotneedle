@@ -111,7 +111,6 @@
 
                 }
             }
-            console.log(points);
             return points;
         }
 

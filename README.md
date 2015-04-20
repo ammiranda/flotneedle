@@ -3,7 +3,7 @@ Flotneedle
 
 ###Overview
 
-This plugin is used to append tooltips at the current mouse position on the canvas element where the flot graph is drawn. Flotneedle is a plugin to be used with the [flot](http://www.flotcharts.org) graphing library. Jquery is a dependency of flot so it is also a dependency of flotneedle.
+This plugin is used to append tooltips at the current mouse position on the canvas element where the flot graph is drawn. Flotneedle is a plugin to be used with the [flot](http://www.flotcharts.org) graphing library. Jquery is a dependency of flot so it is also a dependency of flotneedle. Flotneedle supports stacked and fillarea graphs.
 
 Example screenshot:
 

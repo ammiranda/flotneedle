@@ -6,6 +6,7 @@
             fontFace: 'Arial',
             lineWidth: 0,
             lineColor: 'orange',
+            tooltipPrecision: 3
         },
     };
 
@@ -41,6 +42,8 @@
             for(var i = 0; i < keys.length; i++){
                 var tooltip = drawSet[keys[i]];
 
+                tooltip.text = setPrecision(tooltip.text);
+
                 var rectXPosition = needle.x + 2;
                 var textXPosition = needle.x + 5;
 
@@ -56,6 +59,10 @@
                 ctx.fillStyle = tooltip.color;
                 ctx.fillText(tooltip.text, textXPosition, keys[i]);
             }
+        }
+
+        function setPrecision(str){
+            return parseFloat(str).toPrecision(options.needle.tooltipPrecision).toString();
         }
 
         function getPoints(plot){
@@ -266,6 +273,6 @@
         init: init,
         options: options,
         name: 'needle',
-        version: '1.0.0'
+        version: '1.1.0'
     });
 })(jQuery);

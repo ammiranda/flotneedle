@@ -5,7 +5,7 @@
             fontSize: '12px',
             fontFace: 'Arial',
             lineWidth: 0,
-            lineColor: 'orange',
+            lineColor: 'orange'
         },
     };
 
@@ -266,6 +266,6 @@
         init: init,
         options: options,
         name: 'needle',
-        version: '1.0.0'
+        version: '1.1.0'
     });
 })(jQuery);

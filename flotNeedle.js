@@ -6,7 +6,8 @@
             fontFace: 'Arial',
             lineWidth: 0,
             lineColor: 'orange',
-            tooltips: true
+            tooltips: true,
+            formatX: null
         },
     };
 
@@ -115,12 +116,16 @@
             return points;
         }
 
+        function getDates() {
+
+        }
+
         function padTooltips(tooltips){
             var distance = 20;
             var keys = Object.keys(tooltips);
             // convert each key to an int.
             for (var j = 0; j < keys.length; j++){
-                keys[j] = parseInt(keys[j]);
+                keys[j] = parseInt(keys[j], 10);
             }
 
             // sort least to greatest
@@ -161,21 +166,6 @@
                         keys[k] = current;
                     }
                 }
-                // this one would do the oposit of above 
-                // ex: [45, 46, 47] => [7, 27, 47]
-                // todo: add options for this so we can do top down or bottom up
-                // if(keys[k+1]){
-                //     var next = keys[k+1];
-                //     if(next - current < distance){
-                //         next = current + distance;
-
-                //         tooltip = tooltips[keys[k+1]];
-                //         delete tooltips[keys[k+1]];
-                //         keys[k+1] = next;
-                //         tooltips[next] = tooltip;
-
-                //     }
-                // }
 
             }
 

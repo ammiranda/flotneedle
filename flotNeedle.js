@@ -5,7 +5,8 @@
             fontSize: '12px',
             fontFace: 'Arial',
             lineWidth: 0,
-            lineColor: 'orange'
+            lineColor: 'orange',
+            tooltips: true
         },
     };
 
@@ -256,7 +257,9 @@
                 // draw dataset values
                 var points = getPoints(plot);
                 var drawSet = createDrawSet(points, plot);
-                drawTooltips(ctx, drawSet);
+                if (op.tooltips) {
+                    drawTooltips(ctx, drawSet);
+                }
             }
             ctx.restore();
         });
@@ -266,6 +269,6 @@
         init: init,
         options: options,
         name: 'needle',
-        version: '1.1.0'
+        version: '1.0.0'
     });
 })(jQuery);

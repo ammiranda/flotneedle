@@ -6,7 +6,8 @@
             fontFace: 'Arial',
             lineWidth: 0,
             lineColor: 'orange',
-            tooltips: false
+            tooltips: true,
+            formatX: null
         },
     };
 
@@ -65,6 +66,11 @@
             var options = plot.getOptions();
 
             // get points for normal dataset.
+
+            if (series.needle && series.needle.formatX) {
+                points.push([needle.axes_x, 0, series.needle.formatX(needle.axes_x), 'black']);
+            }
+
             for(var i = 0; i < dataset.length; i++){
                 var series = dataset[i];
                 var dataset_y = series.data[needle.axes_x];
@@ -83,6 +89,7 @@
                         dataset_y = 0;
                     }
                 }
+
                 if(series.needle && series.needle.label){
                     points.push([needle.axes_x, dataset_y, series.needle.label(dataset_y), series.color]);
                 } else {
@@ -115,12 +122,16 @@
             return points;
         }
 
+        function getDates() {
+
+        }
+
         function padTooltips(tooltips){
             var distance = 20;
             var keys = Object.keys(tooltips);
             // convert each key to an int.
             for (var j = 0; j < keys.length; j++){
-                keys[j] = parseInt(keys[j]);
+                keys[j] = parseInt(keys[j], 10);
             }
 
             // sort least to greatest
@@ -161,21 +172,6 @@
                         keys[k] = current;
                     }
                 }
-                // this one would do the oposit of above 
-                // ex: [45, 46, 47] => [7, 27, 47]
-                // todo: add options for this so we can do top down or bottom up
-                // if(keys[k+1]){
-                //     var next = keys[k+1];
-                //     if(next - current < distance){
-                //         next = current + distance;
-
-                //         tooltip = tooltips[keys[k+1]];
-                //         delete tooltips[keys[k+1]];
-                //         keys[k+1] = next;
-                //         tooltips[next] = tooltip;
-
-                //     }
-                // }
 
             }
 

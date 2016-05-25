@@ -66,6 +66,11 @@
             var options = plot.getOptions();
 
             // get points for normal dataset.
+
+            if (series.needle && series.needle.formatX) {
+                points.push([needle.axes_x, 0, series.needle.formatX(needle.axes_x), 'black']);
+            }
+
             for(var i = 0; i < dataset.length; i++){
                 var series = dataset[i];
                 var dataset_y = series.data[needle.axes_x];
@@ -84,6 +89,7 @@
                         dataset_y = 0;
                     }
                 }
+
                 if(series.needle && series.needle.label){
                     points.push([needle.axes_x, dataset_y, series.needle.label(dataset_y), series.color]);
                 } else {

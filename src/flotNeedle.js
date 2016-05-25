@@ -34,6 +34,7 @@
             needle.x = Math.max(0, Math.min(pos.pageX - offset.left, plot.width()));
             needle.y = Math.max(0, Math.min(pos.pageY - offset.top, plot.height()));
             needle.axes_x = pos.x;
+            needle.axes_y = pos.y;
 
             plot.triggerRedrawOverlay();
         }
@@ -60,70 +61,69 @@
             }
         }
 
-        function getPoints(plot){
+        function getPoints(plot, show_y){
             var dataset = plot.getData();
             var points = [];
             var options = plot.getOptions();
 
             // get points for normal dataset.
 
-            if (series.needle && series.needle.formatX) {
-                points.push([needle.axes_x, 0, series.needle.formatX(needle.axes_x), 'black']);
+            if (options.needle && options.needle.formatX) {
+                points.push([needle.axes_x, needle.axes_y, options.needle.formatX(needle.axes_x), 'black']);
             }
 
-            for(var i = 0; i < dataset.length; i++){
-                var series = dataset[i];
-                var dataset_y = series.data[needle.axes_x];
+            if (show_y) {
+                for(var i = 0; i < dataset.length; i++){
+                    series = dataset[i];
+                    var dataset_y = series.data[needle.axes_x];
 
-                if(dataset_y === undefined){
-                    for (j = 0; j < series.data.length; ++j) {
-                        if (series.data[j][0] > needle.axes_x) {
-                            break;
+                    if(dataset_y === undefined){
+                        for (j = 0; j < series.data.length; ++j) {
+                            if (series.data[j][0] > needle.axes_x) {
+                                break;
+                            }
                         }
-                    }
-                    if(series.data[j]){
-                        dataset_y = series.data[j][1];
-                    } else if (needle.x > -1) {
-                        dataset_y = series.data[j-1][1];
-                    } else {
-                        dataset_y = 0;
-                    }
-                }
-
-                if(series.needle && series.needle.label){
-                    points.push([needle.axes_x, dataset_y, series.needle.label(dataset_y), series.color]);
-                } else {
-                    points.push([needle.axes_x, dataset_y, dataset_y, series.color]);
-                }
-
-                // add additional points if fill area is defined
-                if (series.fillArea && (series.data[j] || series.data[j-1])){
-                    var min;
-                    var max;
-
-                    if (needle.x > -1 && j > 0){
-                        min = series.data[j-1][3];
-                        max = series.data[j-1][4];
-                    } else {
-                        min = series.data[j][3];
-                        max = series.data[j][4];
+                        if(series.data[j]){
+                            dataset_y = series.data[j][1];
+                        } else if (needle.x > -1) {
+                            dataset_y = series.data[j-1][1];
+                        } else {
+                            dataset_y = 0;
+                        }
                     }
 
                     if(series.needle && series.needle.label){
-                        points.push([needle.axes_x, min, series.needle.label(min), series.color]);
-                        points.push([needle.axes_x, max, series.needle.label(max), series.color]);
+                        points.push([needle.axes_x, dataset_y, series.needle.label(dataset_y), series.color]);
                     } else {
-                        points.push([needle.axes_x, min, min, series.color]);
-                        points.push([needle.axes_x, max, max, series.color]);
+                        points.push([needle.axes_x, dataset_y, dataset_y, series.color]);
                     }
 
+                    // add additional points if fill area is defined
+                    if (series.fillArea && (series.data[j] || series.data[j-1])){
+                        var min;
+                        var max;
+
+                        if (needle.x > -1 && j > 0){
+                            min = series.data[j-1][3];
+                            max = series.data[j-1][4];
+                        } else {
+                            min = series.data[j][3];
+                            max = series.data[j][4];
+                        }
+
+                        if(series.needle && series.needle.label){
+                            points.push([needle.axes_x, min, series.needle.label(min), series.color]);
+                            points.push([needle.axes_x, max, series.needle.label(max), series.color]);
+                        } else {
+                            points.push([needle.axes_x, min, min, series.color]);
+                            points.push([needle.axes_x, max, max, series.color]);
+                        }
+
+                    }
                 }
             }
+
             return points;
-        }
-
-        function getDates() {
-
         }
 
         function padTooltips(tooltips){
@@ -251,11 +251,9 @@
                 ctx.stroke();
 
                 // draw dataset values
-                var points = getPoints(plot);
+                var points = getPoints(plot, op.tooltips);
                 var drawSet = createDrawSet(points, plot);
-                if (op.tooltips) {
-                    drawTooltips(ctx, drawSet);
-                }
+                drawTooltips(ctx, drawSet);
             }
             ctx.restore();
         });

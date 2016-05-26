@@ -1,4 +1,4 @@
-$(function () {    
+$(function () {
     var data1 = GenerateSeries(0);
     var data2 = GenerateSeries(0);
     var data3 = GenerateSeries(0);
@@ -9,8 +9,8 @@ $(function () {
         var start = added;
         var end = added;
  
-        for(i=1;i<=100;i++){        
-            var d = Math.floor(Math.random() * (end - start + 1) + start);        
+        for(i=1;i<=100;i++){
+            var d = Math.floor(Math.random() * (end - start + 1) + start);
             data.push([i, d]);
             start++;
             end++;
@@ -21,7 +21,7 @@ $(function () {
  
     var options = {
             series:{
-                stack: true,             
+                stack: true,
                 lines: { fill: true }
             },
             legend: {
@@ -31,17 +31,17 @@ $(function () {
                 noColumns: 0
             },
             needle: {
-            	on: true,
+                on: true,
                 nodupes: true
             },
             grid: {
-            	hoverable: true
+                hoverable: true
             }
     };
      
     function ToggleSeries(){
  
-        $.plot(".graph", dataset, options);  
+        $.plot(".graph", dataset, options);
     }
  
     $("input").change(function(){

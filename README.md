@@ -21,6 +21,7 @@ Flotneedle can be customized with a number of options all scoped to the option c
 * fontFace: Sets the font face of the tooltip text
 * lineWidth: Sets the width of the crosshair, in px
 * lineColor: Sets the color of the crosshair, accepts rgba, hex, and css colors
+* x_tooltip: Toggles a display of the x-value, accepts a boolean or an object with key 'formatX' that is assigned a callback that will format the text displayed in the x_tooltip 
 
 Flotneedle also supports labelling for the tooltips all that is needed is for a needle option to be set in the dataset with a callback assigned to the key called label. Example below:
 
@@ -31,7 +32,12 @@ var dataset = [
     needle: {
       label: function(num){
         return num + ' cm';
-      }
+      },
+      x_tooltip: {
+      		formatX: function(x) {
+      			return Math.log(x);
+      		}
+  		}
     }
   }
 ];

@@ -68,8 +68,12 @@
 
             // get points for normal dataset.
 
-            if (options.needle && options.needle.formatX) {
-                points.push([needle.axes_x, needle.axes_y, options.needle.formatX(needle.axes_x), 'black']);
+            if (options.needle && options.needle.x_tooltip) {
+                if (options.needle.x_tooltip.formatX) {
+                    points.push([needle.axes_x, needle.axes_y, options.needle.x_tooltip.formatX(needle.axes_x), 'black']);
+                } else {
+                    points.push([needle.axes_x, needle.axes_y, needle.axes_x, 'black']);
+                }
             }
 
             if (show_y) {

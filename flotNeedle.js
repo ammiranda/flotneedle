@@ -23,10 +23,13 @@
             if(plotOptions.needle === false || !plotOptions.needle) return;
 
             $(plot.getPlaceholder()).bind('plothover', plothover);
+
+            $(plot.getPlaceholder()).bind('mouseout', plotleave);
         });
 
         plot.hooks.shutdown.push(function(plot, eventHolder){
             $(plot.getPlaceholder()).unbind('plothover', plothover);
+            $(plot.getPlaceholder()).unbind('mouseout', plotleave);
         });
 
         function plothover(e, pos, item){
@@ -35,6 +38,14 @@
             needle.y = Math.max(0, Math.min(pos.pageY - offset.top, plot.height()));
             needle.axes_x = pos.x;
             needle.axes_y = pos.y;
+
+            plot.triggerRedrawOverlay();
+        }
+
+        function plotleave(e, pos, item) {
+            needle.axes_y = 450;
+
+            console.log(needle.axes_y);
 
             plot.triggerRedrawOverlay();
         }
@@ -69,6 +80,7 @@
             // get points for normal dataset.
 
             if (options.needle && options.needle.x_tooltip) {
+
                 if (options.needle.x_tooltip.formatX) {
                     points.push([needle.axes_x, needle.axes_y, options.needle.x_tooltip.formatX(needle.axes_x), 'black']);
                 } else {

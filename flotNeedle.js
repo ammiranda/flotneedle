@@ -43,9 +43,16 @@
         }
 
         function plotleave(e, pos, item) {
-            needle.axes_y = 450;
+            var options = plot.getOptions();
+            var y_axes = plot.getAxes().yaxis;
+            var midpoint = (y_axes.max - y_axes.min) / 2 + y_axes.min;
+            var transform = options.yaxis.transform;
 
-            console.log(needle.axes_y);
+            if (transform) {
+                midpoint = Math.sqrt(y_axes.max);
+            }
+
+            needle.axes_y = midpoint;
 
             plot.triggerRedrawOverlay();
         }

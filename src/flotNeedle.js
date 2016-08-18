@@ -59,6 +59,7 @@
 
         function drawTooltips(ctx, drawSet){
             var keys = Object.keys(drawSet);
+            console.log(drawSet);
             for(var i = 0; i < keys.length; i++){
                 var tooltip = drawSet[keys[i]];
 
@@ -90,9 +91,9 @@
             if (options.needle && options.needle.x_tooltip) {
 
                 if (options.needle.x_tooltip.formatX) {
-                    points.push([needle.axes_x, needle.axes_y, options.needle.x_tooltip.formatX(needle.axes_x), 'black']);
+                    points.push([needle.axes_x, needle.axes_y, options.needle.x_tooltip.formatX(needle.axes_x), 'black', 1]);
                 } else {
-                    points.push([needle.axes_x, needle.axes_y, needle.axes_x, 'black']);
+                    points.push([needle.axes_x, needle.axes_y, needle.axes_x, 'black', 1]);
                 }
             }
 

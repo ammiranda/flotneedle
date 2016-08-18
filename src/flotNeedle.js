@@ -59,7 +59,6 @@
 
         function drawTooltips(ctx, drawSet){
             var keys = Object.keys(drawSet);
-            console.log(drawSet);
             for(var i = 0; i < keys.length; i++){
                 var tooltip = drawSet[keys[i]];
 
@@ -118,7 +117,7 @@
                     }
 
                     if(series.needle && series.needle.label){
-                        points.push([needle.axes_x, dataset_y, series.needle.label(dataset_y), series.color, series.yaxis.n]);
+                        points.push([needle.axes_x, dataset_y, series.needle.label(dataset_y, series.yaxis.n), series.color, series.yaxis.n]);
                     } else {
                         points.push([needle.axes_x, dataset_y, dataset_y, series.color, series.yaxis.n]);
                     }
@@ -137,8 +136,8 @@
                         }
 
                         if(series.needle && series.needle.label){
-                            points.push([needle.axes_x, min, series.needle.label(min), series.color, series.yaxis.n]);
-                            points.push([needle.axes_x, max, series.needle.label(max), series.color, series.yaxis.n]);
+                            points.push([needle.axes_x, min, series.needle.label(min, series.yaxis.n), series.color, series.yaxis.n]);
+                            points.push([needle.axes_x, max, series.needle.label(max, series.yaxis.n), series.color, series.yaxis.n]);
                         } else {
                             points.push([needle.axes_x, min, min, series.color, series.yaxis.n]);
                             points.push([needle.axes_x, max, max, series.color, series.yaxis.n]);

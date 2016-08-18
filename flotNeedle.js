@@ -83,6 +83,7 @@
             var dataset = plot.getData();
             var points = [];
             var options = plot.getOptions();
+            var axes = plot.getAxes();
 
             // get points for normal dataset.
 
@@ -116,9 +117,9 @@
                     }
 
                     if(series.needle && series.needle.label){
-                        points.push([needle.axes_x, dataset_y, series.needle.label(dataset_y), series.color]);
+                        points.push([needle.axes_x, dataset_y, series.needle.label(dataset_y), series.color, series.yaxis.n]);
                     } else {
-                        points.push([needle.axes_x, dataset_y, dataset_y, series.color]);
+                        points.push([needle.axes_x, dataset_y, dataset_y, series.color, series.yaxis.n]);
                     }
 
                     // add additional points if fill area is defined
@@ -135,11 +136,11 @@
                         }
 
                         if(series.needle && series.needle.label){
-                            points.push([needle.axes_x, min, series.needle.label(min), series.color]);
-                            points.push([needle.axes_x, max, series.needle.label(max), series.color]);
+                            points.push([needle.axes_x, min, series.needle.label(min), series.color, series.yaxis.n]);
+                            points.push([needle.axes_x, max, series.needle.label(max), series.color, series.yaxis.n]);
                         } else {
-                            points.push([needle.axes_x, min, min, series.color]);
-                            points.push([needle.axes_x, max, max, series.color]);
+                            points.push([needle.axes_x, min, min, series.color, series.yaxis.n]);
+                            points.push([needle.axes_x, max, max, series.color, series.yaxis.n]);
                         }
 
                     }
@@ -204,6 +205,7 @@
         function createDrawSet(points, plot){
             var tooltips = {};
             var options = plot.getOptions();
+            var pointsArr = [];
 
             // shift values up if stack is enabled
             if(options.series.stack){
@@ -223,11 +225,23 @@
                 }
             }
 
+            for (var k = 0; k < points.length; k++) {
+                var pointObj;
+
+                if (points[k][4] === 1) {
+                    pointObj = {coords: {x: points[k][0], y: points[k][1]}, text: points[k][2], color: points[k][3]};
+                } else {
+                    pointObj = {coords: {x: points[k][0], y2: points[k][1]}, text: points[k][2], color: points[k][3]};
+                }
+
+                pointsArr.push(pointObj);
+            }
+
             // convert data array to tooltip objects;
-            for(var p = 0; p < points.length; p++){
-                var coords = plot.p2c({x: points[p][0], y: points[p][1]});
-                var text = points[p][2];
-                var color = points[p][3];
+            for(var p = 0; p < pointsArr.length; p++){
+                var coords = plot.p2c(pointsArr[p].coords);
+                var text = pointsArr[p].text;
+                var color = pointsArr[p].color;
                 var tooltip = {
                     text: text,
                     color: color
@@ -245,6 +259,7 @@
                     tooltips[top] = tooltip;
                 }
             }
+
             return padTooltips(tooltips);
         }
 
